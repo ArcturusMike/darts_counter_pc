@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style>
+        body {
+            width: 99%;
+            height: 100%;
+        }
+
+        input {
+            font-size: inherit;
+            height: 60px;
+        }
+
+        #average1, #average2 {
+            font-weight: bold;
+        }
+
+        button {
+            height: 60px;
+            width: auto;
+            font-size: 17pt;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: springgreen;
+        }
+
+        .upperbuttons {
+            margin-top: 5px;
+        }
+
+        #upperpart {
+            width: 99%;
+            height: auto;
+            font-family: arial;
+            font-size: 25pt;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 10px;
+        }
+
+        #headlines {
+            background-color: yellow;
+        }
+
+        #upupperpart {
+            background-color: deepskyblue;
+        }
+
+        #lowupperpart {
+            background-color: coral;
+        }
+
+        #headlines, #upupperpart, #lowupperpart {
+            height: 80px;
+        }
+
+        #throwplayer1, #throwplayer2 {
+            width: 4em;
+            filter: brightness(1.25);
+            border-radius: 10px;
+        }
+
+        #throwplayer1 {
+            background-color: deepskyblue;
+        }
+
+        #throwplayer2 {
+            background-color: coral;
+        }
+
+        #buttoncells {
+            vertical-align: top;
+        }
+
+        #nameplayer1, #nameplayer2 {
+            font-weight: 600;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        #takenames {
+            float: left;
+            width: 100%;
+        }
+
+        .confirm {
+            float: right;
+            height: 70px;
+            display: none;
+        }
+
+        #back {
+            float: left;
+        }
+
+        #clear {
+            float: right;
+        }
+
+        #lowerpart {
+            height: auto;
+            width: 100%;
+            margin-top: 3%;
+        }
+
+        #scores {
+            margin: 0 auto;
+            height: auto;
+        }
+
+        #score1, #score2 {
+            width: 48.25%;
+            height: auto;
+            border: 1px solid black;
+            float: left;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        #score1 {
+            background-color: deepskyblue;
+            margin-right: 1%;
+        }
+
+        #score2 {
+            background-color: coral;
+            margin-left: 1%;
+        }
+
+        #score1name, #score2name {
+            border-bottom: 1px solid black;
+        }
+
+
+        .scorenamen, .scorescores{
+            font-family: arial;
+            font-size: 60pt;
+        }
+
+        .scorescores {
+            font-size: 150pt;
+            font-family: arial;
+        }
+
+        #nextleg {
+            width: 99%;
+            height: 60px;
+            font-size: 23pt;
+            margin-top: 8px;
+            visibility: hidden;
+        }
+
+        #reset {
+            position: absolute;
+            right: 1.5%;
+            bottom: 1%;
+        } 
+    </style>
+    <script>
+        function takenames() {
+            var name1 = document.getElementById("nameplayer1").value;
+            var name2 = document.getElementById("nameplayer2").value;
+
+            document.getElementById("score1name").innerHTML = name1;
+            document.getElementById("score2name").innerHTML = name2;
+
+            document.getElementById("nameplayer1").style.backgroundColor = "deepskyblue";
+            document.getElementById("nameplayer1").style.borderColor = "deepskyblue";
+
+            document.getElementById("nameplayer2").style.backgroundColor = "coral";
+            document.getElementById("nameplayer2").style.borderColor = "coral";
+
+
+            // mark who is playing
+            document.getElementById("throwplayer1").style.border = "4px solid yellow";
+            document.getElementById("throwplayer1").focus();
+        }
+
+        var ScoresPlayer1 = new Array();
+        var ScoresPlayer2 = new Array();
+
+        function rechnen1() {    
+            var actscore1 = document.getElementById("score1score").innerHTML;
+
+            var throw1 = document.getElementById("throwplayer1").value;
+            if (throw1 == "") {return}
+            throw1 = parseInt(throw1);
+
+            var newscore1 = actscore1 - throw1;
+
+            document.getElementById("score1score").innerHTML = newscore1;
+
+            var i = ScoresPlayer1.length;
+            ScoresPlayer1[i] = throw1;
+            var summe1 = 0;
+
+            for (x = 0; x < ScoresPlayer1.length; x++) {
+                    summe1 = summe1 + ScoresPlayer1[x];
+                    var avg1 = (summe1/ScoresPlayer1.length).toFixed(2);
+                    document.getElementById("average1").innerHTML = avg1;
+                }
+
+            document.getElementById("throwplayer1").value = "";
+
+            // if score = 0, show "new leg" button
+            if (newscore1 == 0) {
+                document.getElementById("nextleg").style.visibility = "visible";
+                document.getElementById("reset").style.visibility = "hidden";
+            }
+
+
+            document.getElementById("throwplayer1").style.border = "";
+            document.getElementById("throwplayer2").style.border = "4px solid yellow";
+            
+            document.getElementById("back").disabled = false;
+            document.getElementById("throwplayer2").focus();
+        }
+
+        function rechnen2() {    
+            var actscore2 = document.getElementById("score2score").innerHTML;
+
+            var throw2 = document.getElementById("throwplayer2").value;
+            if (throw2 == "") {return}
+            throw2 = parseInt(throw2);    // throw1 wird von String in Number umgewandelt
+
+            var newscore2 = actscore2 - throw2;
+
+            document.getElementById("score2score").innerHTML = newscore2;
+
+            var u = ScoresPlayer2.length;
+            ScoresPlayer2[u] = throw2;
+            var summe2 = 0;
+
+            for (y = 0; y < ScoresPlayer2.length; y++) {
+                    summe2 = summe2 + ScoresPlayer2[y];
+                    var avg2 = (summe2/ScoresPlayer2.length).toFixed(2);   // 2 Nachkommastellen
+                    document.getElementById("average2").innerHTML = avg2;
+                }
+
+            document.getElementById("throwplayer2").value = "";
+
+            // wenn Score auf 0, "neues Leg"-Button anzeigen
+            if (newscore2 == 0) {
+                document.getElementById("nextleg").style.visibility = "visible";
+                document.getElementById("reset").style.visibility = "hidden";
+            }
+
+
+            document.getElementById("throwplayer2").style.border = "";
+            document.getElementById("throwplayer1").style.border = "4px solid yellow";
+            
+            document.getElementById("back").disabled = false;
+            document.getElementById("throwplayer1").focus();
+        }
+
+        function clear() {
+            document.getElementById("throwplayer1").value = "";
+            document.getElementById("throwplayer2").value = "";
+        }
+
+        function reset() {
+            var result = confirm("Restart?");
+            if (result == true) {
+                clear();
+                document.getElementById("nameplayer1").value = "";
+                document.getElementById("nameplayer2").value = "";
+                location.reload();
+            }
+        }
+
+        function back() {
+            var lastthrow1 = ScoresPlayer1.length - 1;
+            var lastthrow2 = ScoresPlayer2.length - 1;
+
+            var lastscore1 = ScoresPlayer1[lastthrow1];
+            lastscore1 = parseInt(lastscore1);
+            var lastscore2 = ScoresPlayer2[lastthrow2];
+            lastscore2 = parseInt(lastscore2);
+
+            var altscore1 = document.getElementById("score1score").innerHTML;
+            altscore1 = parseInt(altscore1);
+            var altscore2 = document.getElementById("score2score").innerHTML;
+            altscore2 = parseInt(altscore2);
+
+            var newalterscore1 = altscore1 + lastscore1;
+            var newalterscore2 = altscore2 + lastscore2;
+
+            document.getElementById("throwplayer1").value = lastscore1;
+            document.getElementById("throwplayer2").value = lastscore2;
+
+            document.getElementById("score1score").innerHTML = newalterscore1;
+            document.getElementById("score2score").innerHTML = newalterscore2;
+
+            ScoresPlayer1.pop();
+            ScoresPlayer2.pop();   // last throw gets deleted
+
+
+
+            var summe1 = 0;
+            var summe2 = 0;
+
+            for (x = 0; x < ScoresPlayer1.length; x++) {
+                summe1 = summe1 + ScoresPlayer1[x];
+            }
+            for (y = 0; y < ScoresPlayer2.length; y++) {
+                summe2 = summe2 + ScoresPlayer2[y];
+            }
+
+            var avg1 = (summe1/ScoresPlayer1.length).toFixed(2);
+            var avg2 = (summe2/ScoresPlayer2.length).toFixed(2);
+
+            document.getElementById("average1").innerHTML = avg1;
+            document.getElementById("average2").innerHTML = avg2;
+
+
+            var nextlegvisible = document.getElementById("nextleg").style.visibility;
+            if (nextlegvisible == "visible") {
+                document.getElementById("nextleg").style.visibility = "hidden";
+            }
+            
+            document.getElementById("back").disabled = true;
+        }
+
+        function changenames() {
+            var name1 = document.getElementById("nameplayer1").value;
+            var name2 = document.getElementById("nameplayer2").value;
+
+            var variablename = name1;
+            name1 = name2; 
+            name2 = variablename;
+
+            document.getElementById("nameplayer1").value = name1;
+            document.getElementById("nameplayer2").value = name2;
+
+            takenames();
+        }
+
+        function addleg() {
+            var score1 = document.getElementById("score1score").innerHTML;
+            var score2 = document.getElementById("score2score").innerHTML;
+            var legs1 = document.getElementById("legs1").innerHTML;
+            legs1 = parseInt(legs1);
+            var legs2 = document.getElementById("legs2").innerHTML;
+            legs2 = parseInt(legs2);
+
+            if (score1 == 0) {
+                legs1 += 1;
+                document.getElementById("legs1").innerHTML = legs1;
+            }
+            if (score2 == 0) {
+                legs2 += 1;
+                document.getElementById("legs2").innerHTML = legs2;
+            }
+        }
+
+        function legsswap() {
+            var legs1swap = document.getElementById("legs1").innerHTML;
+            var legs2swap = document.getElementById("legs2").innerHTML;
+
+            var variablelegs = legs1swap;
+            legs1swap = legs2swap;
+            legs2swap = variablelegs;
+
+            document.getElementById("legs1").innerHTML = legs1swap;
+            document.getElementById("legs2").innerHTML = legs2swap;
+        }
+
+        function averageswap() {
+            var variablearray = ScoresPlayer1;
+            ScoresPlayer1 = ScoresPlayer2;
+            ScoresPlayer2 = variablearray;
+
+            document.getElementById("average1").innerHTML = "";
+            document.getElementById("average2").innerHTML = "";
+        }
+
+        function resetscore() {
+            document.getElementById("score1score").innerHTML = 501;
+            document.getElementById("score2score").innerHTML = 501;
+        }
+
+        function nextleg() {
+            clear();
+            changenames();
+            addleg();
+            legsswap();
+            averageswap();
+            resetscore();
+
+            document.getElementById("throwplayer1").style.border = "4px solid yellow";
+            document.getElementById("throwplayer2").style.border = "";
+
+            document.getElementById("nextleg").style.visibility = "hidden";
+            document.getElementById("reset").style.visibility = "visible";
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darts-Counter v1.1.2</title>
+</head>
+<body>    
+    
+    <table id="upperpart" border="0">
+    <tbody><tr id="headlines">
+        <th>Name</th>
+        <th>Legs</th>
+        <th>Average</th>
+        <th>Thrown</th>
+    </tr>
+    <tr id="upupperpart">
+        <th><input type="text" id="nameplayer1" size="7" placeholder="Player 1"></th>
+        <td><span id="legs1">0</span></td>
+        <td><span id="average1"></span></td>
+        <td><input type="number" id="throwplayer1"><button onclick="rechnen1()" class="confirm" id="confirm1">Confirm</button></td>
+    </tr>
+    <tr id="lowupperpart">
+        <th><input type="text" id="nameplayer2" size="7" placeholder="Player 2"></th>
+        <td><span id="legs2">0</span></td>
+        <td><span id="average2"></span></td>
+        <td><input type="number" id="throwplayer2"><button onclick="rechnen2()" class="confirm" id="confirm2">Confirm</button></td>
+    </tr>
+    <tr id="buttoncells">
+        <td><button id="takenames" class="upperbuttons" onclick="takenames()">Take</button></td>    
+        <td></td>    
+        <td></td>    
+        <td>
+            <button id="back" class="upperbuttons" onclick="back()">Back</button>
+            <button id="clear" class="upperbuttons" onclick="clear()">Clear</button>
+        </td>    
+    </tr>
+    </tbody></table>  
+    
+    <div id="lowerpart">
+        <div id="scores">
+            <div id="score1">
+                <div id="score1name" class="scorenamen">Player 1</div>
+                <div id="score1score" class="scorescores">501</div>
+            </div>
+            
+            <div id="score2">
+                <div id="score2name" class="scorenamen">Player 2</div>
+                <div id="score2score" class="scorescores">501</div>
+            </div>
+        </div>
+    </div>
+    <button id="nextleg" onclick="nextleg()">Next Leg</button>
+            
+    <button id="reset" onclick="reset()">Restart</button>
+    
+    
+    <script>
+        var input = document.getElementById("throwplayer1");
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("confirm1").click();
+                }
+            });
+
+        var input = document.getElementById("throwplayer2");
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("confirm2").click();
+                }
+            });
+    </script>
+
+</body></html>
